@@ -1,0 +1,17 @@
+# ─────────────────────────────────────────────
+#  Facebook Toolkit — Python Dependencies
+# ─────────────────────────────────────────────
+#  Install with:  pip install -r requirements.txt
+
+# Required — used by Tool 1 for Facebook Graph API calls
+requests>=2.31.0
+
+# Optional — enables clipboard monitor in Tool 2
+pyperclip>=1.8.2
+
+# Required for GUI — modern desktop interface
+customtkinter>=5.2.0
+
+# Required for Web App — Flask backend
+flask>=3.0.0
+gunicorn>=21.0.0

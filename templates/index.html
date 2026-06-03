@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FB Toolkit</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+</head>
+<body>
+  <div id="app">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-icon">T</div>
+        <span class="brand-text">Toolkit</span>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-link active" data-page="dashboard" onclick="showPage('dashboard')">
+          <span class="material-icons-round">dashboard</span>
+          <span>Dashboard</span>
+        </a>
+        <div class="nav-divider">2-FA</div>
+        <a href="#" class="nav-link" data-page="twofa" onclick="showPage('twofa')">
+          <span class="material-icons-round">lock</span>
+          <span>2-FA Codes</span>
+        </a>
+        <a href="#" class="nav-link" data-page="extractor" onclick="showPage('extractor')">
+          <span class="material-icons-round">key</span>
+          <span>2FA Extract</span>
+        </a>
+        <a href="#" class="nav-link" data-page="drop" onclick="showPage('drop')">
+          <span class="material-icons-round">remove</span>
+          <span>Drop 2FA</span>
+        </a>
+        <div class="nav-divider">Facebook</div>
+        <a href="#" class="nav-link" data-page="fbid" onclick="showPage('fbid')">
+          <span class="material-icons-round">person</span>
+          <span>FB → UID</span>
+        </a>
+        <a href="#" class="nav-link" data-page="phones" onclick="showPage('phones')">
+          <span class="material-icons-round">phone</span>
+          <span>Find Phones</span>
+        </a>
+        <div class="nav-divider">Tools</div>
+        <a href="#" class="nav-link" data-page="fakeid" onclick="showPage('fakeid')">
+          <span class="material-icons-round">badge</span>
+          <span>Fake ID</span>
+        </a>
+        <a href="#" class="nav-link" data-page="email" onclick="showPage('email')">
+          <span class="material-icons-round">email</span>
+          <span>Email Parser</span>
+        </a>
+        <div class="nav-divider">BM &amp; IG</div>
+        <a href="#" class="nav-link" data-page="bm" onclick="showPage('bm')">
+          <span class="material-icons-round">business</span>
+          <span>BM Tools</span>
+        </a>
+        <a href="#" class="nav-link" data-page="ig" onclick="showPage('ig')">
+          <span class="material-icons-round">photo_camera</span>
+          <span>Instagram</span>
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <span class="footer-version">v1.0.0 · Web</span>
+      </div>
+    </aside>
+
+    <!-- Mobile toggle -->
+    <button class="mobile-toggle" id="mobileToggle" onclick="toggleSidebar()">
+      <span class="material-icons-round">menu</span>
+    </button>
+
+    <!-- Main content -->
+    <main class="main-content">
+      <!-- Header -->
+      <header class="top-header">
+        <div class="header-left">
+          <div class="logo-icon">T</div>
+          <h1 class="logo-text">FB Toolkit</h1>
+        </div>
+        <div class="header-center">
+          <div class="search-bar">
+            <span class="material-icons-round">search</span>
+            <input type="text" id="searchInput" placeholder="Search tools..." oninput="filterTools(this.value)">
+          </div>
+        </div>
+        <div class="header-right">
+          <button class="header-btn" title="GitHub"><span class="material-icons-round">code</span></button>
+          <button class="header-btn" title="Help"><span class="material-icons-round">help_outline</span></button>
+          <button class="header-btn" title="Settings"><span class="material-icons-round">settings</span></button>
+        </div>
+      </header>
+
+      <!-- Page content container -->
+      <div class="page-container" id="pageContainer">
+
+        <!-- ══════ DASHBOARD ══════ -->
+        <section class="page active" id="page-dashboard">
+          <div class="page-header">
+            <div class="page-header-left">
+              <div class="page-icon blue"><span class="material-icons-round">dashboard</span></div>
+              <div>
+                <h2>Dashboard</h2>
+                <p>All tools at a glance · v1.0.0</p>
+              </div>
+            </div>
+            <button class="refresh-btn" onclick="showPage('dashboard')">
+              <span class="material-icons-round">refresh</span> Refresh
+            </button>
+          </div>
+
+          <!-- 2FA section -->
+          <div class="section-header">
+            <div class="section-icon green"><span class="material-icons-round">lock</span></div>
+            <span class="section-label">2-FA</span>
+            <span class="section-count">3</span>
+          </div>
+          <div class="card-grid" id="grid-2fa">
+            <div class="tool-card" data-tool="twofa" onclick="showPage('twofa')">
+              <div class="card-icon green"><span class="material-icons-round">lock</span></div>
+              <div class="card-info"><h3>2-FA Codes</h3><p>Generate TOTP codes</p></div>
+            </div>
+            <div class="tool-card" data-tool="extractor" onclick="showPage('extractor')">
+              <div class="card-icon green"><span class="material-icons-round">key</span></div>
+              <div class="card-info"><h3>2FA Extract</h3><p>Extract codes from text</p></div>
+            </div>
+            <div class="tool-card" data-tool="drop" onclick="showPage('drop')">
+              <div class="card-icon green"><span class="material-icons-round">remove</span></div>
+              <div class="card-info"><h3>Drop 2FA</h3><p>Remove 2FA from text</p></div>
+            </div>
+          </div>
+
+          <!-- Facebook section -->
+          <div class="section-header">
+            <div class="section-icon blue"><span class="material-icons-round">person</span></div>
+            <span class="section-label">Facebook</span>
+            <span class="section-count">2</span>
+          </div>
+          <div class="card-grid" id="grid-fb">
+            <div class="tool-card" data-tool="fbid" onclick="showPage('fbid')">
+              <div class="card-icon blue"><span class="material-icons-round">person</span></div>
+              <div class="card-info"><h3>FB → UID</h3><p>Convert links to user IDs</p></div>
+            </div>
+            <div class="tool-card" data-tool="phones" onclick="showPage('phones')">
+              <div class="card-icon blue"><span class="material-icons-round">phone</span></div>
+              <div class="card-info"><h3>Find Phones</h3><p>Extract phone numbers</p></div>
+            </div>
+          </div>
+
+          <!-- Tools section -->
+          <div class="section-header">
+            <div class="section-icon amber"><span class="material-icons-round">build</span></div>
+            <span class="section-label">Tools</span>
+            <span class="section-count">2</span>
+          </div>
+          <div class="card-grid" id="grid-tools">
+            <div class="tool-card" data-tool="fakeid" onclick="showPage('fakeid')">
+              <div class="card-icon amber"><span class="material-icons-round">badge</span></div>
+              <div class="card-info"><h3>Fake ID</h3><p>Generate random identity</p></div>
+            </div>
+            <div class="tool-card" data-tool="email" onclick="showPage('email')">
+              <div class="card-icon amber"><span class="material-icons-round">email</span></div>
+              <div class="card-info"><h3>Email Parser</h3><p>Parse emails from text</p></div>
+            </div>
+          </div>
+
+          <!-- BM & IG section -->
+          <div class="section-header">
+            <div class="section-icon red"><span class="material-icons-round">verified</span></div>
+            <span class="section-label">BM &amp; Instagram</span>
+            <span class="section-count">2</span>
+          </div>
+          <div class="card-grid" id="grid-bmig">
+            <div class="tool-card" data-tool="bm" onclick="showPage('bm')">
+              <div class="card-icon red"><span class="material-icons-round">business</span></div>
+              <div class="card-info"><h3>BM Tools</h3><p>Check BM status</p></div>
+            </div>
+            <div class="tool-card" data-tool="ig" onclick="showPage('ig')">
+              <div class="card-icon pink"><span class="material-icons-round">photo_camera</span></div>
+              <div class="card-info"><h3>Instagram</h3><p>IG tools &amp; download</p></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ══════ 2FA CODES ══════ -->
+        <section class="page" id="page-twofa">
+          <div class="page-header">
+            <div class="page-header-left">
+              <div class="page-icon green"><span class="material-icons-round">lock</span></div>
+              <div><h2>2-FA Codes</h2><p>Generate TOTP codes from base32 secret keys</p></div>
+            </div>
+          </div>
+          <div class="tool-panel">
+            <div class="input-group">
+              <label>Base32 Secret Key</label>
+              <div class="input-row">
+                <textarea id="twofa-secret" placeholder="JBSWY3DPEHPK3PXP" rows="2"></textarea>
+              </div>
+            </div>
+            <div class="btn-row">
+              <button class="btn btn-primary" onclick="twofaGenerate()">
+                <span class="material-icons-round">lock_clock</span> Generate Code
+              </button>
+              <button class="btn btn-secondary" onclick="document.getElementById('twofa-secret').value=''">
+                <span class="material-icons-round">refresh</span> Clear
+              </button>
+            </div>
+            <div class="totp-display" id="twofa-result" style="display:none">
+              <div class="totp-code" id="twofa-code">------</div>
+              <div class="totp-timer">
+                <div class="timer-bar" id="twofa-timer-bar"></div>
+                <span class="timer-text" id="twofa-timer-text">--s</span>
+              </div>
+            </div>
+            <div class="guide-steps">
+              <div class="guide-step"><span class="step-num">1</span><h4>Get Secret</h4><p>Find the base32 key from your 2FA setup</p></div>
+              <div class="guide-step"><span class="step-num">2</span><h4>Paste</h4><p>Enter the secret key above</p></div>
+              <div class="guide-step"><span class="step-num">3</span><h4>Generate</h4><p>Click Generate to get a 6-digit code</p></div>
+              <div class="guide-step"><span class="step-num">4</span><h4>Copy</h4><p>Copy the code and use it within 30 seconds</p></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ══════ 2FA EXTRACT ══════ -->
+        <section class="page" id="page-extractor">
+          <div class="page-header">
+            <div class="page-header-left">
+              <div class="page-icon green"><span class="material-icons-round">key</span></div>
+              <div><h2>2FA Extract</h2><p>Extract 2FA codes from text messages</p></div>
+            </div>
+          </div>
+          <div class="tool-panel">
+            <div class="input-group">
+              <label>Paste Text Messages</label>
+              <textarea id="extract-text" rows="6" placeholder="Paste text containing 2FA codes..."></textarea>
+            </div>
+            <div class="btn-row">
+              <button class="btn btn-primary" onclick="extractCodes()">
+                <span class="material-icons-round">search</span> Extract Codes
+              </button>
+              <button class="btn btn-secondary" onclick="document.getElementById('extract-text').value=''; document.getElementById('extract-result').style.display='none'">
+                <span class="material-icons-round">refresh</span> Clear
+              </button>
+            </div>
+            <div class="result-box" id="extract-result" style="display:none">
+              <div class="result-label">Latest Code</div>
+              <div class="result-value" id="extract-latest">-</div>
+              <div class="result-label" style="margin-top:12px">All Codes</div>
+              <div class="result-text" id="extract-codes"></div>
+              <button class="btn btn-sm" onclick="copyText(document.getElementById('extract-latest').textContent)">Copy Latest</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ══════ DROP 2FA ══════ -->
+        <section class="page" id="page-drop">
+          <div class="page-header">
+            <div class="page-header-left">
+              <div class="page-icon green"><span class="material-icons-round">remove</span></div>
+              <div><h2>Drop 2FA</h2><p>Remove 2FA codes from text</p></div>
+            </div>
+          </div>
+          <div class="tool-panel">
+            <div class="input-group">
+              <label>Paste Text</label>
+              <textarea id="drop-text" rows="6" placeholder="Paste text containing 2FA codes to remove..."></textarea>
+            </div>
+            <div class="btn-row">
+              <button class="btn btn-primary" onclick="dropCode()">
+                <span class="material-icons-round">delete_sweep</span> Drop 2FA
+              </button>
+              <button class="btn btn-secondary" onclick="document.getElementById('drop-text').value=''; document.getElementById('drop-result').style.display='none'">
+                <span class="material-icons-round">refresh</span> Clear
+              </button>
+            </div>
+            <div class="result-box" id="drop-result" style="display:none">
+              <div class="result-label">Removed Code</div>
+              <div class="result-value" id="drop-code">-</div>
+              <div class="result-label" style="margin-top:12px">Cleaned Text</div>
+              <div class="result-text" id="drop-clean"></div>
+              <button class="btn btn-sm" onclick="copyText(document.getElementById('drop-clean').textContent)">Copy Clean Text</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ══════ FB → UID ══════ -->
+        <section class="page" id="page-fbid">
+          <div class="page-header">
+            <div class="page-header-left">
+              <div class="page-icon blue"><span class="material-icons-round">person</span></div>
+              <div><h2>FB → UID</h2><p>Convert Facebook links to user IDs</p></div>
+            </div>
+          </div>
+          <div class="tool-panel">
+            <div class="input-group">
+              <label>Facebook URL or Username</label>
+              <textarea id="fb-url" rows="3" placeholder="https://www.facebook.com/zuck or just 'zuck'"></textarea>
+              <div class="checkbox-row">
+                <label class="toggle"><input type="checkbox" id="fb-bulk"><span>Bulk Mode (one URL per line)</span></label>
+              </div>
+            </div>
+            <div class="btn-row">
+              <button class="btn btn-primary" onclick="fbLookup()">
+                <span class="material-icons-round">search</span> Find UID
+              </button>
+              <button class="btn btn-secondary" onclick="document.getElementById('fb-url').value=''; document.getElementById('fb-result').style.display='none'">
+                <span class="material-icons-round">refresh</span> Clear
+              </button>
+            </div>
+            <div class="result-box" id="fb-result" style="display:none">
+              <div id="fb-result-content"></div>
+            </div>
+            <div class="guide-steps">
+              <div class="guide-step"><span class="step-num">1</span><h4>Copy URL</h4><p>Copy any Facebook profile URL</p></div>
+              <div class="guide-step"><span class="step-num">2</span><h4>Paste</h4><p>Paste the URL in the input field</p></div>
+              <div class="guide-step"><span class="step-num">3</span><h4>Extract</h4><p>Click Find UID to get the ID</p></div>
+              <div class="guide-step"><span class="step-num">4</span><h4>Copy</h4><p>Copy the numeric UID</p></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ══════ FIND PHONES ══════ -->
+        <section class="page" id="page-phones">
+          <div class="page-header">
+            <div class="page-header-left">
+              <div class="page-icon blue"><span class="material-icons-round">phone</span></div>
+              <div><h2>Find Phones</h2><p>Extract phone numbers from text</p></div>
+            </div>
+          </div>
+          <div class="tool-panel">
+            <div class="input-group">
+              <label>Paste Text</label>
+              <textarea id="phone-text" rows="6" placeholder="Paste text containing phone numbers..."></textarea>
+            </div>
+            <div class="btn-row">
+              <button class="btn btn-primary" onclick="findPhones()">
+                <span class="material-icons-round">search</span> Find Phones
+              </button>
+              <button class="btn btn-secondary" onclick="document.getElementById('phone-text').value=''; document.getElementById('phone-result').style.display='none'">
+                <span class="material-icons-round">refresh</span> Clear
+              </button>
+            </div>
+            <div class="result-box" id="phone-result" style="display:none">
+              <div class="result-label">Phone Numbers Found</div>
+              <div class="result-text" id="phone-codes"></div>
+              <button class="btn btn-sm" onclick="copyText(document.getElementById('phone-codes').textContent)">Copy All</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ══════ FAKE ID ══════ -->
+        <section class="page" id="page-fakeid">
+          <div class="page-header">
+            <div class="page-header-left">
+              <div class="page-icon amber"><span class="material-icons-round">badge</span></div>
+              <div><h2>Fake ID Generator</h2><p>Generate random identity data</p></div>
+            </div>
+          </div>
+          <div class="tool-panel">
+            <div class="btn-row">
+              <button class="btn btn-primary" onclick="generateFakeID()">
+                <span class="material-icons-round">shuffle</span> Generate
+              </button>
+              <button class="btn btn-secondary" onclick="generateFakeID()">
+                <span class="material-icons-round">refresh</span> Regenerate
+              </button>
+              <button class="btn btn-secondary" id="fakeid-copy-btn" style="display:none" onclick="copyText(document.getElementById('fakeid-data').textContent)">
+                <span class="material-icons-round">content_copy</span> Copy All
+              </button>
+            </div>
+            <div class="result-box" id="fakeid-result" style="display:none">
+              <div class="result-text" id="fakeid-data"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ══════ EMAIL PARSER ══════ -->
+        <section class="page" id="page-email">
+          <div class="page-header">
+            <div class="page-header-left">
+              <div class="page-icon amber"><span class="material-icons-round">email</span></div>
+              <div><h2>Email Parser</h2><p>Extract emails, subjects, and dates from text</p></div>
+            </div>
+          </div>
+          <div class="tool-panel">
+            <div class="input-group">
+              <label>Paste Email Text</label>
+              <textarea id="email-text" rows="8" placeholder="Paste email headers or text..."></textarea>
+            </div>
+            <div class="btn-row">
+              <button class="btn btn-primary" onclick="parseEmails()">
+                <span class="material-icons-round">search</span> Parse
+              </button>
+              <button class="btn btn-secondary" onclick="document.getElementById('email-text').value=''; document.getElementById('email-result').style.display='none'">
+                <span class="material-icons-round">refresh</span> Clear
+              </button>
+            </div>
+            <div class="result-box" id="email-result" style="display:none">
+              <div id="email-result-content"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ══════ BM TOOLS ══════ -->
+        <section class="page" id="page-bm">
+          <div class="page-header">
+            <div class="page-header-left">
+              <div class="page-icon red"><span class="material-icons-round">business</span></div>
+              <div><h2>BM Tools</h2><p>Check Business Manager status</p></div>
+            </div>
+          </div>
+          <div class="tool-panel">
+            <div class="input-group">
+              <label>BM IDs or URLs (one per line)</label>
+              <textarea id="bm-text" rows="6" placeholder="Enter BM IDs or URLs..."></textarea>
+            </div>
+            <div class="btn-row">
+              <button class="btn btn-primary" onclick="checkBM('live')">
+                <span class="material-icons-round">visibility</span> Check Live
+              </button>
+              <button class="btn btn-secondary" onclick="checkBM('verified')">
+                <span class="material-icons-round">verified</span> Check Verified
+              </button>
+              <button class="btn btn-secondary" onclick="checkBM('link')">
+                <span class="material-icons-round">link</span> Check Link
+              </button>
+              <button class="btn btn-secondary" onclick="checkBM('name')">
+                <span class="material-icons-round">label</span> Check Name
+              </button>
+            </div>
+            <div class="result-box" id="bm-result" style="display:none">
+              <div id="bm-result-content"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ══════ INSTAGRAM ══════ -->
+        <section class="page" id="page-ig">
+          <div class="page-header">
+            <div class="page-header-left">
+              <div class="page-icon pink"><span class="material-icons-round">photo_camera</span></div>
+              <div><h2>Instagram Tools</h2><p>Check accounts &amp; download content</p></div>
+            </div>
+          </div>
+          <div class="tool-panel">
+            <div class="tab-bar" id="ig-tabs">
+              <button class="tab-btn active" onclick="showIGTab('check')">Check Account</button>
+              <button class="tab-btn" onclick="showIGTab('download')">Download</button>
+            </div>
+
+            <!-- Check tab -->
+            <div class="tab-panel" id="ig-tab-check">
+              <div class="input-group">
+                <label>Instagram Usernames (one per line)</label>
+                <textarea id="ig-text" rows="5" placeholder="Enter usernames..."></textarea>
+              </div>
+              <div class="btn-row">
+                <button class="btn btn-primary" onclick="checkIG()">
+                  <span class="material-icons-round">search</span> Check Accounts
+                </button>
+              </div>
+              <div class="result-box" id="ig-result" style="display:none">
+                <div id="ig-result-content"></div>
+              </div>
+            </div>
+
+            <!-- Download tab -->
+            <div class="tab-panel" id="ig-tab-download" style="display:none">
+              <div class="input-group">
+                <label>Instagram URL</label>
+                <textarea id="ig-dl-url" rows="2" placeholder="https://www.instagram.com/reel/..."></textarea>
+              </div>
+              <div class="radio-row" id="ig-dl-type">
+                <label><input type="radio" name="ig-type" value="Reels" checked> Reels</label>
+                <label><input type="radio" name="ig-type" value="Stories"> Stories</label>
+                <label><input type="radio" name="ig-type" value="Videos"> Videos</label>
+                <label><input type="radio" name="ig-type" value="Photos"> Photos</label>
+              </div>
+              <div class="btn-row">
+                <button class="btn btn-primary" onclick="downloadIG()">
+                  <span class="material-icons-round">download</span> Get Download Info
+                </button>
+              </div>
+              <div class="result-box" id="ig-dl-result" style="display:none">
+                <div id="ig-dl-result-content"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div><!-- /page-container -->
+    </main>
+  </div>
+
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
